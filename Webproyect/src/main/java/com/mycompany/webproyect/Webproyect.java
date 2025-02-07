@@ -4,13 +4,21 @@
 
 package com.mycompany.webproyect;
 
-/**
- *
- * @author jhon.sosa-m
- */
-public class Webproyect {
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+import static com.mycompany.webproyect.HTTPServer.staticfiles;
+import static com.mycompany.webproyect.HTTPServer.get;
+
+public class Webproyect {
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        staticfiles("/webroot");
+        get("/app/hello", (req, resp) -> "Hello World");
+        get("/app/pi", (req, res) -> {
+            return String.valueOf(Math.PI);
+        });
+        get("/app/e", (req, res) -> {
+            return String.valueOf(Math.E);
+        });
     }
 }

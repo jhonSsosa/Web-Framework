@@ -1,33 +1,23 @@
 package com.mycompany.webproyect;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.net.URL;
 import java.io.InputStream;
+import java.net.URL;
 
 public class FileController {
-    public static String getFileContent(String filePath) {
+    public static byte[] getFileContent(String filePath) {
         try {
-            if (filePath.equals("/")) {
-                filePath = "/index.html";
-            }
             URL resourceUrl = FileController.class.getResource(filePath);
             if (resourceUrl == null) {
-                return "<h1>Error 404 - Archivo no encontrado</h1>";
+                System.err.println("Archivo no encontrado: " + filePath);
+                return null;
             }
             try (InputStream inputStream = resourceUrl.openStream()) {
-                byte[] fileContent = inputStream.readAllBytes();
-                if (getMimeType(filePath).startsWith("image")) {
-                    return new String(fileContent);
-                } else {
-                    return new String(fileContent);
-                }
+                return inputStream.readAllBytes();
             }
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
-            return "<h1>Error 404 - Archivo no encontrado</h1>";
+            return null;
         }
     }
     public static String getMimeType(String filePath) {
